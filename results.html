@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>Cost Benefit Analysis Results</header>
+        <div id="results">
+            <h2>Results</h2>
+            <p id="coe"></p>
+            <p id="coen"></p>
+            <p id="dcoe"></p>
+            <p id="dcoewol"></p>
+            <p id="dcoewolc"></p>
+            <p id="dcoewl"></p>
+            <p id="dcoewln"></p>
+            <p id="dcoewlcn"></p>
+            <p id="combinedGrid"></p> <!-- New element for combined grid-tied COE -->
+            <p id="combinedDual"></p> <!-- New element for combined dual-mode COE -->
+            <h2>Charts</h2>
+            <canvas id="gridTiedChart"></canvas>
+            <canvas id="dualModeChart"></canvas>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Retrieve values from localStorage
+            const COE = parseFloat(localStorage.getItem('COE'));
+            const COEN = parseFloat(localStorage.getItem('COEN'));
+            const DCOE = parseFloat(localStorage.getItem('DCOE'));
+            const DCOEWOL = parseFloat(localStorage.getItem('DCOEWOL'));
+            const DCOEWOLC = parseFloat(localStorage.getItem('DCOEWOLC'));
+            const DCOEWL = parseFloat(localStorage.getItem('DCOEWL'));
+            const DCOEWLN = parseFloat(localStorage.getItem('DCOEWLN'));
+            const DCOEWLCN = parseFloat(localStorage.getItem('DCOEWLCN'));
+            const Ld = parseFloat(localStorage.getItem('Ld'));
+            const Ln = parseFloat(localStorage.getItem('Ln'));
+            const n = parseFloat(localStorage.getItem('n'));
+            const X = parseFloat(localStorage.getItem('X'));
+            const nL = parseFloat(localStorage.getItem('nL'));
+            const ACd = parseFloat(localStorage.getItem('ACd'));
+            const T1 = parseFloat(localStorage.getItem('T1'));
+            const T = parseFloat(localStorage.getItem('T'));
+            const Tn = parseFloat(localStorage.getItem('Tn'));
+            const nn = parseFloat(localStorage.getItem('nn'));
+
+            // Display COEN when n is 0 and COE otherwise
+            if (n === 0 && nn === 0) {
+                document.getElementById('coen').textContent = COEN ? `Cost of Energy for Grid-tied PV system: ${COEN} Rs./kWh` : 'No COEN value found.';
+                document.getElementById('dcoe').textContent = DCOE ? `Cost of Energy for Dual mode PV system: ${DCOE} Rs./kWh` : 'No DCOE value found.';
+                document.getElementById('coe').style.display = 'none';
+            } else if (nn === 0 && n > 0){
+                document.getElementById('coe').textContent = COE ? `Cost of Energy for Grid-tied PV system: ${COE} Rs./kWh` : 'No COE value found.';
+                if (Ld === 0){
+                    if (n > X){
+                        document.getElementById('dcoewolc').textContent = DCOEWOLC ? `Cost of Energy for Dual mode PV system: ${DCOEWOLC} Rs./kWh` : 'No DCOEWOLC value found.';
+                        document.getElementById('dcoewol').style.display = 'none';
+                    }
+                    else{
+                        document.getElementById('dcoewol').textContent = DCOEWOL ? `Cost of Energy for Dual mode PV system: ${DCOEWOL} Rs./kWh` : 'No DCOEWOL value found.';
+                        document.getElementById('dcoewolc').style.display = 'none';
+                    }
+                }
+                else{
+                    document.getElementById('dcoewl').textContent = DCOEWL ? `Cost of Energy for Dual mode PV system: ${DCOEWL} Rs./kWh` : 'No DCOEWL value found.';
+                    document.getElementById('dcoewol').style.display = 'none';
+                    document.getElementById('dcoewolc').style.display = 'none';
+                }
+            } else if (n === 0 && nn > 0){
+                document.getElementById('coen').textContent = COEN ? `Cost of Energy for Grid-tied PV system: ${COEN} Rs./kWh` : 'No COEN value found.';
+                if (Ln == 0){
+                    document.getElementById('dcoe').textContent = DCOE ? `Cost of Energy for Dual mode PV system: ${DCOE} Rs./kWh` : 'No DCOE value found.';
+                    document.getElementById('dcoewln').style.display = 'none';
+                    document.getElementById('dcoewlcn').style.display = 'none';
+                }
+                else{
+                    if (nn > nL) {
+                        document.getElementById('dcoewlcn').textContent = DCOEWLCN ? `Cost of Energy for Dual mode PV system: ${DCOEWLCN} Rs./kWh` : 'No DCOEWLCN value found.';
+                        document.getElementById('dcoewln').style.display = 'none';
+                    } else {
+                        document.getElementById('dcoewln').textContent = DCOEWLN ? `Cost of Energy for Dual mode PV system: ${DCOEWLN} Rs./kWh` : 'No DCOEWLN value found.';
+                        document.getElementById('dcoewlcn').style.display = 'none';
+                    }
+                }
+            } else if (n > 0 && nn > 0) {
+                // Calculate and display combined COE and COEN for grid-tied system
+                const combinedGridCOE = COE + COEN;
+                document.getElementById('combinedGrid').textContent = `Combined Cost of Energy for Grid-tied PV system: ${combinedGridCOE} Rs./kWh`;
+
+                // Calculate and display combined dual-mode outputs
+                let dualModeCOE = 0;
+
+                // Add the conditions based on the values of Ld and Ln
+                if (Ld === 0 && n > X) {
+                    dualModeCOE += DCOEWOLC;
+                } else if (Ld === 0 && n <= X) {
+                    dualModeCOE += DCOEWOL;
+                } else if (Ld !== 0) {
+                    dualModeCOE += DCOEWL;
+                }
+
+                if (Ln === 0) {
+                    dualModeCOE += DCOE;
+                } else if (nn > nL) {
+                    dualModeCOE += DCOEWLCN;
+                } else {
+                    dualModeCOE += DCOEWLN;
+                }
+
+                document.getElementById('combinedDual').textContent = `Combined Cost of Energy for Dual mode PV system: ${dualModeCOE} Rs./kWh`;
+
+                // Hide other individual results since they are combined
+                document.getElementById('coe').style.display = 'none';
+                document.getElementById('coen').style.display = 'none';
+                document.getElementById('dcoe').style.display = 'none';
+                document.getElementById('dcoewol').style.display = 'none';
+                document.getElementById('dcoewolc').style.display = 'none';
+                document.getElementById('dcoewl').style.display = 'none';
+                document.getElementById('dcoewln').style.display = 'none';
+                document.getElementById('dcoewlcn').style.display = 'none';
+            }
+            const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Example grid outage hours
+            const gridTiedDataPoints = [COE, COE + 1, COE + 2, COE + 3, COE + 4, COE + 5, COE + 6, COE + 7, COE + 8, COE + 9, COE + 10]; // Example data
+            const dualModeDataPoints = [DCOE, DCOE + 1, DCOE + 2, DCOE + 3, DCOE + 4, DCOE + 5, DCOE + 6, DCOE + 7, DCOE + 8, DCOE + 9, DCOE + 10]; // Example data
+
+            // Create Grid-tied chart
+            const gridTiedCtx = document.getElementById('gridTiedChart').getContext('2d');
+            new Chart(gridTiedCtx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'COE for Grid-tied PV system',
+                        data: gridTiedDataPoints,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        pointRadius: 5, // Show data points
+                        pointBackgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Highlight the point if it matches the COE value
+                            return gridTiedDataPoints[index] === COE ? 'red' : 'rgba(75, 192, 192, 1)';
+                        }
+                    }, {
+                        label: 'COE Value Highlight',
+                        data: [COE],
+                        borderColor: 'red',
+                        backgroundColor: 'red',
+                        pointRadius: 7, // Highlight point with larger radius
+                        pointBackgroundColor: 'red',
+                        pointBorderColor: 'red',
+                        pointHoverRadius: 10,
+                        showLine: false // Don't show line for this dataset
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Grid Outage Hours'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'COE (Rs./kWh)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `COE: ${tooltipItem.raw} Rs./kWh`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Create Dual Mode chart
+            const dualModeCtx = document.getElementById('dualModeChart').getContext('2d');
+            new Chart(dualModeCtx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'DCOE for Dual mode PV system',
+                        data: dualModeDataPoints,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: true,
+                        pointRadius: 5, // Show data points
+                        pointBackgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Highlight the point if it matches the DCOE value
+                            return dualModeDataPoints[index] === DCOE ? 'orange' : 'rgba(153, 102, 255, 1)';
+                        }
+                    }, {
+                        label: 'DCOE Value Highlight',
+                        data: [DCOE],
+                        borderColor: 'orange',
+                        backgroundColor: 'orange',
+                        pointRadius: 7, // Highlight point with larger radius
+                        pointBackgroundColor: 'orange',
+                        pointBorderColor: 'orange',
+                        pointHoverRadius: 10,
+                        showLine: false // Don't show line for this dataset
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Grid Outage Hours'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'DCOE (Rs./kWh)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `DCOE: ${tooltipItem.raw} Rs./kWh`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
