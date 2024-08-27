@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cost Benefit Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+</head>
+<body>
+    <div class="container">
+        <header>Cost Benefit Analysis</header>
+        <form id="regForm">
+            <div class="form first">
+                <!-- First Form -->
+                <div class="details personal">
+                    <span class="title">Personal Information</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Full Name</label>
+                            <input type="text" id="name" placeholder="Enter your name">
+                        </div>
+                        <div class="input-field">
+                            <label>State</label>
+                            <input type="text" id="state" placeholder="Enter your state">
+                        </div>
+                        <div class="input-field">
+                            <label>Date of birth</label>
+                            <input type="text" id="dob" placeholder="Enter your date of birth">
+                        </div>
+                        <div class="input-field">
+                            <label>Mobile number</label>
+                            <input type="number" id="mobile" placeholder="Enter your mobile number">
+                        </div>
+                        <div class="input-field">
+                            <label>Email</label>
+                            <input type="email" id="email" placeholder="Enter your email">
+                        </div>
+                        <div class="input-field">
+                            <label>District</label>
+                            <input type="text" id="district" placeholder="Enter your district">
+                        </div>
+                    </div>
+                </div>
+                <div class="details ID">
+                    <span class="title">PV System Costs</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Annual interest rate</label>
+                            <input type="number" id="i" placeholder="Enter your Annual interest rate" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of PV panels</label>
+                            <input type="number" id="x" placeholder="Enter your Cost of PV panels" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost for installation</label>
+                            <input type="number" id="y" placeholder="Enter your Cost for installation" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of semiconductor devices</label>
+                            <input type="number" id="z1" placeholder="Enter your Cost of semiconductor devices" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of capacitors</label>
+                            <input type="number" id="z2" placeholder="Enter your Cost of capacitors" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of inverter</label>
+                            <input type="number" id="z" placeholder="Enter your Cost of inverter" required>
+                        </div>
+                    </div>
+                    <button type="button" class="Nxtbutton" onclick="showSecondForm()">
+                        <span class="btntext">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form second">
+                <!-- Second Form -->
+                <div class="details personal">
+                    <span class="title">Maintenance and Lifetime</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Annual O&M of PV & electronics</label>
+                            <input type="number" id="v1" placeholder="Enter your Annual O&M of PV & electronics" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Battery rating</label>
+                            <input type="number" id="Br" placeholder="Enter Battery rating" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Local Load(daytime)(if not enter 0)</label>
+                            <input type="number" id="Ld" placeholder="Enter Load during daytime" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Local Load(nighttime)(if not enter 0)</label>
+                            <input type="number" id="Ln" placeholder="Enter Load during nighttime" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Grid-outage(nighttime)(if not enter 0)</label>
+                            <input type="number" id="nn" placeholder="Enter Grid-outage during nighttime" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="details ID">
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Lifetime of semiconductor devices</label>
+                            <input type="number" id="n1" placeholder="Enter your Lifetime of semiconductor devices" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Lifetime of capacitors</label>
+                            <input type="number" id="n2" placeholder="Enter your Lifetime of capacitors" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Lifetime of battery</label>
+                            <input type="number" id="n3" placeholder="Enter your Lifetime of battery" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Lifetime of PV panels</label>
+                            <input type="number" id="L" placeholder="Enter your Lifetime of PV panels" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Grid-outage hours(day time)(if not enter 0) </label>
+                            <input type="number" id="n" placeholder="Enter your Grid-outage hours during day time" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Daylight hours</label>
+                            <input type="number" id="h" placeholder="Enter your Daylight hours" required>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" class="backbutton" onclick="showFirstForm()">
+                            <span class="btntext">Back</span>
+                        </button>
+                        <button type="button" class="Nxtbutton" onclick="showThirdForm()">
+                            <span class="btntext">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form third">
+                <!-- Third Form -->
+                <div class="details personal">
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Efficiency of inverter</label>
+                            <input type="number" id="ηi" placeholder="Enter Efficiency of inverter">
+                        </div>
+                        <div class="input-field">
+                            <label>Efficiency of DC-DC converter</label>
+                            <input type="number" id="ηdc" placeholder="Enter Efficiency of DC-DC converter">
+                        </div>
+                        <div class="input-field">
+                            <label>Charging efficiency</label>
+                            <input type="number" id="ηc" placeholder="Enter Charging efficiency">
+                        </div>
+                        <div class="input-field">
+                            <label>Discharging efficiency</label>
+                            <input type="number" id="ηd" placeholder="Enter Discharging efficiency">
+                        </div>
+                        <div class="input-field">
+                            <label>Peak power</label>
+                            <input type="number" id="Wp" placeholder="Enter Peak power" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Depth of discharge</label>
+                            <input type="number" id="DOD" placeholder="Enter Depth of discharge" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="details ID">
+                    <span class="title">Only for Dual mode PV system</span>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Annual O&M cost of batteries</label>
+                            <input type="number" id="v2" placeholder="Enter your Annual O&M cost of batteries" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of battery bank</label>
+                            <input type="number" id="w" placeholder="Enter your Cost of battery bank" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Additional semiconductor device Cost</label>
+                            <input type="number" id="u1" placeholder="Enter your Additional semiconductor device Cost" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of additional capacitors</label>
+                            <input type="number" id="u2" placeholder="Enter your Cost of additional capacitors" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Cost of additional electronics</label>
+                            <input type="number" id="u" placeholder="Enter your Cost of additional electronics" required>
+                        </div>
+
+                    </div>    
+                    <div class="buttons">
+                        <button type="button" class="backbutton" onclick="showSecondForm()">
+                            <span class="btntext">Back</span>
+                        </button>
+                        <button type="submit" class="submit">
+                            <span class="btntext">Submit</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
