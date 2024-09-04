@@ -6,7 +6,7 @@ This is the website build to know the cost benefit of the pv systems
 Cost Benefit Analysis of PV Systems is a leading solar energy supplier focused on sustainable solutions. We provide high-quality products for energy efficiency and reduced carbon emissions, promoting renewable energy adoption.
 
 ### How Website first page looks 
-<img width="1404" alt="Screenshot 2024-07-20 at 9 20 53 PM" src=<img width="1440" alt="Screenshot 2024-09-05 at 4 22 01 AM" src="https://github.com/user-attachments/assets/0f7ed806-bf50-4467-a095-fb94892a758c">
+<img width="1440" alt="Screenshot 2024-09-05 at 4 22 01 AM" src="https://github.com/user-attachments/assets/0f7ed806-bf50-4467-a095-fb94892a758c">
 
 
 ### Here is what it says:
