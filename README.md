@@ -12,6 +12,7 @@ Cost Benefit Analysis of PV Systems is a leading solar energy supplier focused o
 <img width="1436" alt="Screenshot 2024-09-05 at 4 32 26 AM" src="https://github.com/user-attachments/assets/6e573f62-bf1c-49fa-8422-2dcc5bc45ce2">
 
 ### How Website Analysis page looks 
+<img width="1437" alt="Screenshot 2024-09-05 at 4 34 53 AM" src="https://github.com/user-attachments/assets/07b44644-b451-4ce9-84b4-634ed0791222">
 
 
 ### Here is what it says:
