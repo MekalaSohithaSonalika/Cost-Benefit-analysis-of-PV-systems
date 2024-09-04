@@ -17,7 +17,7 @@ Cost Benefit Analysis of PV Systems is a leading solar energy supplier focused o
 <img width="1437" alt="Screenshot 2024-09-05 at 4 37 56 AM" src="https://github.com/user-attachments/assets/ebd65d77-8c6a-47e6-951e-71c09b32711b">
 
 ### Here is what it says:
-It will should the COE value of both grid tied and dual mode PV systems in order to compare the both and the user will choose which will convenient
+It will the COE value of both grid tied and dual mode PV systems in order to compare the both and the user will choose which will convenient
 
 ### The website also has the following sections:
 1. Home
