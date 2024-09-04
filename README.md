@@ -11,6 +11,9 @@ Cost Benefit Analysis of PV Systems is a leading solar energy supplier focused o
 ### How Website About page looks 
 <img width="1436" alt="Screenshot 2024-09-05 at 4 32 26 AM" src="https://github.com/user-attachments/assets/6e573f62-bf1c-49fa-8422-2dcc5bc45ce2">
 
+### How Website Analysis page looks 
+
+
 ### Here is what it says:
 It will should the COE value of both grid tied and dual mode PV systems in order to compare the both and the user will choose which will convenient
 
