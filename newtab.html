@@ -16,27 +16,27 @@
                     <div class="fields">
                         <div class="input-field">
                             <label>Full Name</label>
-                            <input type="text" id="name" placeholder="Enter your name">
+                            <input type="text" id="name" placeholder="Enter your name" required>
                         </div>
                         <div class="input-field">
                             <label>State</label>
-                            <input type="text" id="state" placeholder="Enter your state">
+                            <input type="text" id="state" placeholder="Enter your state" required>
                         </div>
                         <div class="input-field">
-                            <label>Date of birth</label>
-                            <input type="text" id="dob" placeholder="Enter your date of birth">
+                            <label>District</label>
+                            <input type="text" id="district" placeholder="Enter your district" required>
                         </div>
+                        <div class="input-field">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" placeholder="Enter your date of birth" required>
+                        </div>                        
                         <div class="input-field">
                             <label>Mobile number</label>
-                            <input type="number" id="mobile" placeholder="Enter your mobile number">
+                            <input type="number" id="mobile" placeholder="Enter your mobile number" required>
                         </div>
                         <div class="input-field">
                             <label>Email</label>
                             <input type="email" id="email" placeholder="Enter your email">
-                        </div>
-                        <div class="input-field">
-                            <label>District</label>
-                            <input type="text" id="district" placeholder="Enter your district">
                         </div>
                     </div>
                 </div>
@@ -44,27 +44,27 @@
                     <span class="title">PV System Costs</span>
                     <div class="fields">
                         <div class="input-field">
-                            <label>Annual interest rate</label>
+                            <label>Annual interest rate(%)</label>
                             <input type="number" id="i" placeholder="Enter your Annual interest rate" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of PV panels</label>
+                            <label>Cost of PV panels(Rs)</label>
                             <input type="number" id="x" placeholder="Enter your Cost of PV panels" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost for installation</label>
+                            <label>Cost for installation(Rs)</label>
                             <input type="number" id="y" placeholder="Enter your Cost for installation" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of semiconductor devices</label>
+                            <label>Cost of semiconductor devices(Rs)</label>
                             <input type="number" id="z1" placeholder="Enter your Cost of semiconductor devices" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of capacitors</label>
+                            <label>Cost of capacitors(Rs)</label>
                             <input type="number" id="z2" placeholder="Enter your Cost of capacitors" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of inverter</label>
+                            <label>Cost of inverter(Rs)</label>
                             <input type="number" id="z" placeholder="Enter your Cost of inverter" required>
                         </div>
                     </div>
@@ -80,53 +80,50 @@
                     <span class="title">Maintenance and Lifetime</span>
                     <div class="fields">
                         <div class="input-field">
-                            <label>Annual O&M of PV & electronics</label>
+                            <label>Annual O&M of PV & electronics(Rs)</label>
                             <input type="number" id="v1" placeholder="Enter your Annual O&M of PV & electronics" required>
                         </div>
                         <div class="input-field">
-                            <label>Battery rating</label>
-                            <input type="number" id="Br" placeholder="Enter Battery rating" required>
+                            <label>Peak power(kW)</label>
+                            <input type="number" id="Wp" placeholder="Enter Peak power" required>
                         </div>
                         <div class="input-field">
-                            <label>Local Load(daytime)(if not enter 0)</label>
-                            <input type="number" id="Ld" placeholder="Enter Load during daytime" required>
-                        </div>
-                        <div class="input-field">
-                            <label>Local Load(nighttime)(if not enter 0)</label>
-                            <input type="number" id="Ln" placeholder="Enter Load during nighttime" required>
-                        </div>
-                        <div class="input-field">
-                            <label>Grid-outage(nighttime)(if not enter 0)</label>
-                            <input type="number" id="nn" placeholder="Enter Grid-outage during nighttime" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="details ID">
-                    <div class="fields">
-                        <div class="input-field">
-                            <label>Lifetime of semiconductor devices</label>
-                            <input type="number" id="n1" placeholder="Enter your Lifetime of semiconductor devices" required>
-                        </div>
-                        <div class="input-field">
-                            <label>Lifetime of capacitors</label>
-                            <input type="number" id="n2" placeholder="Enter your Lifetime of capacitors" required>
-                        </div>
-                        <div class="input-field">
-                            <label>Lifetime of battery</label>
-                            <input type="number" id="n3" placeholder="Enter your Lifetime of battery" required>
-                        </div>
-                        <div class="input-field">
-                            <label>Lifetime of PV panels</label>
-                            <input type="number" id="L" placeholder="Enter your Lifetime of PV panels" required>
+                            <label>Daylight hours</label>
+                            <input type="number" id="h" placeholder="Enter your Daylight hours" required>
                         </div>
                         <div class="input-field">
                             <label>Grid-outage hours(day time)(if not enter 0) </label>
                             <input type="number" id="n" placeholder="Enter your Grid-outage hours during day time" required>
                         </div>
                         <div class="input-field">
-                            <label>Daylight hours</label>
-                            <input type="number" id="h" placeholder="Enter your Daylight hours" required>
+                            <label>Grid-outage(nighttime)(if not enter 0)</label>
+                            <input type="number" id="nn" placeholder="Enter Grid-outage during nighttime" required>
                         </div>
+                        <div class="input-field">
+                            <label>Local Load(daytime)(if not enter 0)</label>
+                            <input type="number" id="Ld" placeholder="Enter Load during daytime" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="details ID">
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Local Load(nighttime)(if not enter 0)</label>
+                            <input type="number" id="Ln" placeholder="Enter Load during nighttime" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Lifetime of semiconductor devices(Yrs)</label>
+                            <input type="number" id="n1" placeholder="Enter your Lifetime of semiconductor devices" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Lifetime of capacitors(Yrs)</label>
+                            <input type="number" id="n2" placeholder="Enter your Lifetime of capacitors" required>
+                        </div>
+                        <div class="input-field">
+                            <label>Lifetime of PV panels(Yrs)</label>
+                            <input type="number" id="L" placeholder="Enter your Lifetime of PV panels" required>
+                        </div>
+
                     </div>
                     <div class="buttons">
                         <button type="button" class="backbutton" onclick="showFirstForm()">
@@ -144,28 +141,28 @@
                 <div class="details personal">
                     <div class="fields">
                         <div class="input-field">
-                            <label>Efficiency of inverter</label>
+                            <label>Efficiency of inverter(optional)</label>
                             <input type="number" id="ηi" placeholder="Enter Efficiency of inverter">
                         </div>
                         <div class="input-field">
-                            <label>Efficiency of DC-DC converter</label>
+                            <label>Efficiency of DC-DC converter(optional)</label>
                             <input type="number" id="ηdc" placeholder="Enter Efficiency of DC-DC converter">
                         </div>
                         <div class="input-field">
-                            <label>Charging efficiency</label>
+                            <label>Charging efficiency(optional)</label>
                             <input type="number" id="ηc" placeholder="Enter Charging efficiency">
                         </div>
                         <div class="input-field">
-                            <label>Discharging efficiency</label>
+                            <label>Discharging efficiency(optional)</label>
                             <input type="number" id="ηd" placeholder="Enter Discharging efficiency">
                         </div>
                         <div class="input-field">
-                            <label>Peak power</label>
-                            <input type="number" id="Wp" placeholder="Enter Peak power" required>
+                            <label>Battery rating(Rs)(optional)</label>
+                            <input type="number" id="Br" placeholder="Enter Battery rating">
                         </div>
                         <div class="input-field">
-                            <label>Depth of discharge</label>
-                            <input type="number" id="DOD" placeholder="Enter Depth of discharge" required>
+                            <label>Depth of discharge(optional)</label>
+                            <input type="number" id="DOD" placeholder="Enter Depth of discharge">
                         </div>
                     </div>
                 </div>
@@ -173,26 +170,30 @@
                     <span class="title">Only for Dual mode PV system</span>
                     <div class="fields">
                         <div class="input-field">
-                            <label>Annual O&M cost of batteries</label>
+                            <label>Annual O&M cost of batteries(Rs)</label>
                             <input type="number" id="v2" placeholder="Enter your Annual O&M cost of batteries" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of battery bank</label>
-                            <input type="number" id="w" placeholder="Enter your Cost of battery bank" required>
-                        </div>
-                        <div class="input-field">
-                            <label>Additional semiconductor device Cost</label>
+                            <label>Additional semiconductor device Cost(Rs)</label>
                             <input type="number" id="u1" placeholder="Enter your Additional semiconductor device Cost" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of additional capacitors</label>
+                            <label>Cost of battery bank(Rs)</label>
+                            <input type="number" id="w" placeholder="Enter your Cost of battery bank" required>
+                        </div>
+                        
+                        <div class="input-field">
+                            <label>Cost of additional capacitors(Rs)</label>
                             <input type="number" id="u2" placeholder="Enter your Cost of additional capacitors" required>
                         </div>
                         <div class="input-field">
-                            <label>Cost of additional electronics</label>
+                            <label>Cost of additional electronics(Rs)</label>
                             <input type="number" id="u" placeholder="Enter your Cost of additional electronics" required>
                         </div>
-
+                        <div class="input-field">
+                            <label>Lifetime of battery(Yrs)</label>
+                            <input type="number" id="n3" placeholder="Enter your Lifetime of battery" required>
+                        </div>
                     </div>    
                     <div class="buttons">
                         <button type="button" class="backbutton" onclick="showSecondForm()">
