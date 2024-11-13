@@ -23,6 +23,12 @@
             <h2>Charts</h2>
             <canvas id="gridTiedChart"></canvas>
             <canvas id="dualModeChart"></canvas>
+            <canvas id="gridTiedwithoutloadsChart"></canvas>
+            <canvas id="dualModewithoutloadsChart"></canvas>
+            <canvas id="gridTiednightChart"></canvas>
+            <canvas id="dualModenightChart"></canvas>
+            <canvas id="gridTiednightwithoutloadsChart"></canvas>
+            <canvas id="dualModenightwithoutloadsChart"></canvas>
         </div>
     </div>
     <script>
@@ -46,12 +52,27 @@
             const T = parseFloat(localStorage.getItem('T'));
             const Tn = parseFloat(localStorage.getItem('Tn'));
             const nn = parseFloat(localStorage.getItem('nn'));
+            const ACg = parseFloat(localStorage.getItem('ACg'));
+            const Wp = parseFloat(localStorage.getItem('Wp'));
+            const ηi = parseFloat(localStorage.getItem('ηi'));
+            const ηdc = parseFloat(localStorage.getItem('ηdc'));
+            const ηc = parseFloat(localStorage.getItem('ηc'));
+            const ηd = parseFloat(localStorage.getItem('ηd'));
+            const h = parseFloat(localStorage.getItem('h'));
 
             // Display COEN when n is 0 and COE otherwise
             if (n === 0 && nn === 0) {
                 document.getElementById('coen').textContent = COEN ? `Cost of Energy for Grid-tied PV system: ${COEN} Rs./kWh` : 'No COEN value found.';
                 document.getElementById('dcoe').textContent = DCOE ? `Cost of Energy for Dual mode PV system: ${DCOE} Rs./kWh` : 'No DCOE value found.';
                 document.getElementById('coe').style.display = 'none';
+                document.getElementById('dcoewol').style.display = 'none';
+                document.getElementById('dcoewolc').style.display = 'none';
+                document.getElementById('dcoewl').style.display = 'none';
+                document.getElementById('dcoewln').style.display = 'none';
+                document.getElementById('dcoewlcn').style.display = 'none';
+                document.getElementById('combinedGrid').style.display = 'none';
+                document.getElementById('combinedDual').style.display = 'none';
+
             } else if (nn === 0 && n > 0){
                 document.getElementById('coe').textContent = COE ? `Cost of Energy for Grid-tied PV system: ${COE} Rs./kWh` : 'No COE value found.';
                 if (Ld === 0){
@@ -69,6 +90,13 @@
                     document.getElementById('dcoewol').style.display = 'none';
                     document.getElementById('dcoewolc').style.display = 'none';
                 }
+                document.getElementById('coen').style.display = 'none';
+                document.getElementById('dcoe').style.display = 'none';
+                document.getElementById('dcoewln').style.display = 'none';
+                document.getElementById('dcoewlcn').style.display = 'none';
+                document.getElementById('combinedGrid').style.display = 'none';
+                document.getElementById('combinedDual').style.display = 'none';
+
             } else if (n === 0 && nn > 0){
                 document.getElementById('coen').textContent = COEN ? `Cost of Energy for Grid-tied PV system: ${COEN} Rs./kWh` : 'No COEN value found.';
                 if (Ln == 0){
@@ -85,6 +113,13 @@
                         document.getElementById('dcoewlcn').style.display = 'none';
                     }
                 }
+                document.getElementById('coe').style.display = 'none';
+                document.getElementById('dcoewol').style.display = 'none';
+                document.getElementById('dcoewolc').style.display = 'none';
+                document.getElementById('dcoewl').style.display = 'none';
+                document.getElementById('combinedGrid').style.display = 'none';
+                document.getElementById('combinedDual').style.display = 'none';
+
             } else if (n > 0 && nn > 0) {
                 // Calculate and display combined COE and COEN for grid-tied system
                 const combinedGridCOE = COE + COEN;
@@ -122,12 +157,146 @@
                 document.getElementById('dcoewln').style.display = 'none';
                 document.getElementById('dcoewlcn').style.display = 'none';
             }
-            const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Example grid outage hours
-            const gridTiedDataPoints = [COE, COE + 1, COE + 2, COE + 3, COE + 4, COE + 5, COE + 6, COE + 7, COE + 8, COE + 9, COE + 10]; // Example data
-            const dualModeDataPoints = [DCOE, DCOE + 1, DCOE + 2, DCOE + 3, DCOE + 4, DCOE + 5, DCOE + 6, DCOE + 7, DCOE + 8, DCOE + 9, DCOE + 10]; // Example data
+            function hideChart(chartId) {
+                document.getElementById(chartId).style.display = 'none';
+            }
+
+            // Function to show chart elements
+            function showChart(chartId) {
+                document.getElementById(chartId).style.display = 'block';
+            }
+            if(n === 0){
+                hideChart('gridTiedChart');
+                hideChart('dualModeChart');
+                hideChart('gridTiedwithoutloadsChart');
+                hideChart('dualModewithoutloadsChart');
+            }
+            if(nn === 0){
+                hideChart('gridTiednightChart');
+                hideChart('dualModenightChart');
+                hideChart('gridTiednightwithoutloadsChart');
+                hideChart('dualModenightwithoutloadsChart');
+            }
+            if (Ld !== 0) {
+                showChart('gridTiedChart');
+                showChart('dualModeChart');
+                hideChart('gridTiedwithoutloadsChart');
+                hideChart('dualModewithoutloadsChart');
+            } else {
+                hideChart('gridTiedChart');
+                hideChart('dualModeChart');
+                showChart('gridTiedwithoutloadsChart');
+                showChart('dualModewithoutloadsChart');
+            }
+            if (Ln !== 0) {
+                showChart('gridTiednightChart');
+                showChart('dualModenightChart');
+                hideChart('gridTiednightwithoutloadsChart');
+                hideChart('dualModenightwithoutloadsChart');
+            } else {
+                hideChart('gridTiednightChart');
+                hideChart('dualModenightChart');
+                showChart('gridTiednightwithoutloadsChart');
+                showChart('dualModenightwithoutloadsChart');
+            }
+            // Generate hours array up to the user-defined value of h
+            const hours = Array.from({ length: h + 1 }, (_, i) => i); // Example grid outage hours
+            // Function to slice arrays based on user input 'h'
+            function sliceArrayByH(array) {
+                return array.slice(0, h + 1); // h + 1 to include the value at index 'h'
+            }
+
+            const gridTiedDataPoints = sliceArrayByH([
+                COEN, 
+                ACg/(Wp * (h - 1) * ηi * 365), 
+                ACg/(Wp * (h - 2) * ηi * 365), 
+                ACg/(Wp * (h - 3) * ηi * 365),
+                ACg/(Wp * (h - 4) * ηi * 365),
+                ACg/(Wp * (h - 5) * ηi * 365),
+                ACg/(Wp * (h - 6) * ηi * 365), 
+                ACg/(Wp * (h - 7) * ηi * 365), 
+                ACg/(Wp * (h - 8) * ηi * 365), 
+                ACg/(Wp * (h - 9) * ηi * 365), 
+                ACg/(Wp * (h - 10) * ηi * 365)
+            ]);
+
+            const dualModeDataPoints = sliceArrayByH([
+                DCOE, 
+                (ACd - (Ld * 1 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 1)))), 
+                (ACd - (Ld * 2 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 2)))), 
+                (ACd - (Ld * 3 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 3)))), 
+                (ACd - (Ld * 4 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 4)))), 
+                (ACd - (Ld * 5 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 5)))), 
+                (ACd - (Ld * 6 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 6)))), 
+                (ACd - (Ld * 7 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 7)))), 
+                (ACd - (Ld * 8 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 8)))), 
+                (ACd - (Ld * 9 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 9)))), 
+                (ACd - (Ld * 10 * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - 10))))
+            ]);
+
+            const gridTiedwithoutloadsDataPoints = sliceArrayByH([
+                COEN, 
+                ACg/(Wp * (h - 1) * ηi * 365), 
+                ACg/(Wp * (h - 2) * ηi * 365), 
+                ACg/(Wp * (h - 3) * ηi * 365),
+                ACg/(Wp * (h - 4) * ηi * 365),
+                ACg/(Wp * (h - 5) * ηi * 365),
+                ACg/(Wp * (h - 6) * ηi * 365), 
+                ACg/(Wp * (h - 7) * ηi * 365), 
+                ACg/(Wp * (h - 8) * ηi * 365), 
+                ACg/(Wp * (h - 9) * ηi * 365), 
+                ACg/(Wp * (h - 10) * ηi * 365)
+            ]);
+
+            const dualModewithoutloadsDataPoints = [];
+            for (let i = 0; i <= h; i++) {
+                if (i === 0) {
+                    dualModewithoutloadsDataPoints.push(DCOE);
+                } else if (i < X) {
+                    dualModewithoutloadsDataPoints.push(DCOEWOL);
+                } else {
+                    dualModewithoutloadsDataPoints.push(DCOEWOLC);
+                }
+            }
+
+            const gridTiednightDataPoints = sliceArrayByH([
+                COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN
+            ]);
+
+            const dualModenightDataPoints = [];
+            for (let i = 0; i <= h; i++) {
+                if (i === 0) {
+                    dualModenightDataPoints.push(DCOE);
+                } else if (i < nL) {
+                    dualModenightDataPoints.push((ACd-(Ln * i * 365 * 29.01) + ((8 * 365 * Ln * i)/(ηc * ηd * ηi * ηi)))/(365 * ((Ln*(h+i))+(ηdc*ηi*((h * Wp) - ((h * Ln)/(ηdc * ηi)))))));
+                } else {
+                    dualModenightDataPoints.push((ACd - (Ln * nL * 365 * 29.01) + ((8 * 365 * Ln * nL) / (ηc * ηd * ηi * ηi))) / (365 * (Ln * (h + nL)))
+                    );
+                }
+            }
+
+            const gridTiednightwithoutloadsDataPoints = sliceArrayByH([
+                COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN, COEN
+            ]);
+
+            const dualModenightwithoutloadsDataPoints = sliceArrayByH([
+                DCOE, DCOE, DCOE, DCOE, DCOE, DCOE, DCOE, DCOE, DCOE, DCOE, DCOE
+            ]);
+
+            // Now plot the graph with the data points
 
             // Create Grid-tied chart
             const gridTiedCtx = document.getElementById('gridTiedChart').getContext('2d');
+            const dualModeCtx = document.getElementById('dualModeChart').getContext('2d');
+            const gridTiedwithoutloadsCtx = document.getElementById('gridTiedwithoutloadsChart').getContext('2d');
+            const dualModewithoutloadsCtx = document.getElementById('dualModewithoutloadsChart').getContext('2d');
+            const gridTiednightCtx = document.getElementById('gridTiednightChart').getContext('2d');
+            const dualModenightCtx = document.getElementById('dualModenightChart').getContext('2d');
+            const gridTiednightwithoutloadsCtx = document.getElementById('gridTiednightwithoutloadsChart').getContext('2d');
+            const dualModenightwithoutloadsCtx = document.getElementById('dualModenightwithoutloadsChart').getContext('2d');
+          
+            if (n>0){
+            if(Ld !== 0){
             new Chart(gridTiedCtx, {
                 type: 'line',
                 data: {
@@ -144,16 +313,6 @@
                             // Highlight the point if it matches the COE value
                             return gridTiedDataPoints[index] === COE ? 'red' : 'rgba(75, 192, 192, 1)';
                         }
-                    }, {
-                        label: 'COE Value Highlight',
-                        data: [COE],
-                        borderColor: 'red',
-                        backgroundColor: 'red',
-                        pointRadius: 7, // Highlight point with larger radius
-                        pointBackgroundColor: 'red',
-                        pointBorderColor: 'red',
-                        pointHoverRadius: 10,
-                        showLine: false // Don't show line for this dataset
                     }]
                 },
                 options: {
@@ -162,13 +321,13 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Grid Outage Hours'
+                                text: 'Grid Outage Hours during day time'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'COE (Rs./kWh)'
+                                text: 'COE with local loads (Rs./kWh)'
                             }
                         }
                     },
@@ -186,9 +345,6 @@
                     }
                 }
             });
-
-            // Create Dual Mode chart
-            const dualModeCtx = document.getElementById('dualModeChart').getContext('2d');
             new Chart(dualModeCtx, {
                 type: 'line',
                 data: {
@@ -205,16 +361,6 @@
                             // Highlight the point if it matches the DCOE value
                             return dualModeDataPoints[index] === DCOE ? 'orange' : 'rgba(153, 102, 255, 1)';
                         }
-                    }, {
-                        label: 'DCOE Value Highlight',
-                        data: [DCOE],
-                        borderColor: 'orange',
-                        backgroundColor: 'orange',
-                        pointRadius: 7, // Highlight point with larger radius
-                        pointBackgroundColor: 'orange',
-                        pointBorderColor: 'orange',
-                        pointHoverRadius: 10,
-                        showLine: false // Don't show line for this dataset
                     }]
                 },
                 options: {
@@ -223,13 +369,13 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Grid Outage Hours'
+                                text: 'Grid Outage Hours during day time'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
-                                text: 'DCOE (Rs./kWh)'
+                                text: 'DCOE with local loads(Rs./kWh)'
                             }
                         }
                     },
@@ -247,6 +393,325 @@
                     }
                 }
             });
+        } else {
+                new Chart(gridTiedwithoutloadsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: hours,
+                        datasets: [{
+                            label: 'COE for Grid-tied PV system',
+                            data: gridTiedwithoutloadsDataPoints,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: true,
+                            pointRadius: 5, // Show data points
+                            pointBackgroundColor: function(context) {
+                                const index = context.dataIndex;
+                                // Highlight the point if it matches the COE value
+                                return gridTiedwithoutloadsDataPoints[index] === COE ? 'red' : 'rgba(75, 192, 192, 1)';
+                            }
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Grid Outage Hours during day time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'COE without local loads(Rs./kWh)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `COE: ${tooltipItem.raw} Rs./kWh`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                // Create Dual Mode chart
+                new Chart(dualModewithoutloadsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: hours,
+                        datasets: [{
+                            label: 'DCOE for Dual mode PV system',
+                            data: dualModewithoutloadsDataPoints,
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                            fill: true,
+                            pointRadius: 5, // Show data points
+                            pointBackgroundColor: function(context) {
+                                const index = context.dataIndex;
+                                // Highlight the point if it matches the DCOE value
+                                return dualModewithoutloadsDataPoints[index] === DCOE ? 'orange' : 'rgba(153, 102, 255, 1)';
+                            }
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Grid Outage Hours during day time'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'DCOE without local loads(Rs./kWh)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `DCOE: ${tooltipItem.raw} Rs./kWh`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        else{
+            // Hide the canvas element
+            document.getElementById('gridTiedChart').style.display = 'none';
+            // Hide the canvas element
+            document.getElementById('dualModeChart').style.display = 'none';
+            // Hide the canvas element
+            document.getElementById('gridTiedwithoutloadsChart').style.display = 'none';
+            // Hide the canvas element
+            document.getElementById('dualModewithoutloadsChart').style.display = 'none';
+        }
+        if (nn>0){
+            if(Ln !== 0){
+            new Chart(gridTiednightCtx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'COE for Grid-tied PV system',
+                        data: gridTiednightDataPoints,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        pointRadius: 5, // Show data points
+                        pointBackgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Highlight the point if it matches the COE value
+                            return gridTiednightDataPoints[index] === COE ? 'red' : 'rgba(75, 192, 192, 1)';
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Grid Outage Hours during night time'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'COE with local loads (Rs./kWh)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `COE: ${tooltipItem.raw} Rs./kWh`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            new Chart(dualModenightCtx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'DCOE for Dual mode PV system',
+                        data: dualModenightDataPoints,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: true,
+                        pointRadius: 5, // Show data points
+                        pointBackgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Highlight the point if it matches the DCOE value
+                            return dualModenightDataPoints[index] === DCOE ? 'orange' : 'rgba(153, 102, 255, 1)';
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Grid Outage Hours during night time'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'DCOE with local loads(Rs./kWh)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `DCOE: ${tooltipItem.raw} Rs./kWh`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        else{
+            new Chart(gridTiednightwithoutloadsCtx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'COE for Grid-tied PV system',
+                        data: gridTiednightwithoutloadsDataPoints,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        pointRadius: 5, // Show data points
+                        pointBackgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Highlight the point if it matches the COE value
+                            return gridTiednightwithoutloadsDataPoints[index] === COE ? 'red' : 'rgba(75, 192, 192, 1)';
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Grid Outage Hours during night time'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'COE without local loads (Rs./kWh)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `COE: ${tooltipItem.raw} Rs./kWh`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            new Chart(dualModenightwithoutloadsCtx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: 'DCOE for Dual mode PV system',
+                        data: dualModenightwithoutloadsDataPoints,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: true,
+                        pointRadius: 5, // Show data points
+                        pointBackgroundColor: function(context) {
+                            const index = context.dataIndex;
+                            // Highlight the point if it matches the DCOE value
+                            return dualModenightwithoutloadsDataPoints[index] === DCOE ? 'orange' : 'rgba(153, 102, 255, 1)';
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Grid Outage Hours during night time'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'DCOE without local loads(Rs./kWh)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `DCOE: ${tooltipItem.raw} Rs./kWh`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+    else{
+        
+            // Hide the canvas element
+            document.getElementById('gridTiednightChart').style.display = 'none';
+            // Hide the canvas element
+            document.getElementById('dualModenightChart').style.display = 'none';
+            // Hide the canvas element
+            document.getElementById('gridTiednightwithoutloadsChart').style.display = 'none';
+            // Hide the canvas element
+            document.getElementById('dualModenightwithoutloadsChart').style.display = 'none';
+    }
         });
     </script>
 </body>
