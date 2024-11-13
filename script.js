@@ -33,14 +33,14 @@ function Sub() {
     const n = parseFloat(document.getElementById('n').value);
     const Wp = parseFloat(document.getElementById('Wp').value);
     const ηi = parseFloat(document.getElementById('ηi').value) || 0.9; // Use 0.9 if not filled
-    const ηc = parseFloat(document.getElementById('ηc').value) || 0.75; // Use 0.9 if not filled
-    const ηd = parseFloat(document.getElementById('ηd').value) || 0.75; // Use 0.9 if not filled
+    const ηc = parseFloat(document.getElementById('ηc').value) || 0.9; // Use 0.9 if not filled
+    const ηd = parseFloat(document.getElementById('ηd').value) || 0.9; // Use 0.9 if not filled
     const ηdc = parseFloat(document.getElementById('ηdc').value) || 0.95; // Use 0.95 if not filled
     const w = parseFloat(document.getElementById('w').value);
     const u = parseFloat(document.getElementById('u').value);
     const v2 = parseFloat(document.getElementById('v2').value);
-    const DOD = parseFloat(document.getElementById('DOD').value);
-    const Br = parseFloat(document.getElementById('Br').value);
+    const DOD = parseFloat(document.getElementById('DOD').value) || 0.5;
+    const Br = parseFloat(document.getElementById('Br').value) || 11.4;
     const Ld = parseFloat(document.getElementById('Ld').value);
     const Ln = parseFloat(document.getElementById('Ln').value);
     const nn = parseFloat(document.getElementById('nn').value);
@@ -53,6 +53,7 @@ function Sub() {
     // Calculate T = Wp * (h - n) * ηi * 365
     const T = Wp * (h - n) * ηi * 365;
     const Tn = Wp * h * ηi * 365;
+    const ACg = ((x + y + z) * (i / 100) + v1);
     const ACd = (((x + y + z + w + u) * (i / 100)) + v1 + v2);
     const T1 = Wp * h * ηi * ηdc * 365;
     const X = (DOD * Br) / (ηc * ηdc * Wp);
@@ -64,9 +65,9 @@ function Sub() {
     const DCOE = ACd / T1;
     const DCOEWOL = ACd / (365 * Wp * (((h - n) * ηdc * ηi ) + (n * ηdc * ηc * ηd * ηi)));
     const DCOEWOLC = ACd / (365 * Wp * (((h - n) * ηdc * ηi ) + (X * ηdc * ηc * ηd * ηi)));
-    const DCOEWL = (ACd - (Ld * n * 17 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - n))));
-    const DCOEWLN = (ACd-(Ln * nn * 365 * 17) + ((6 * 365 * Ln * nn)/(ηc * ηd * ηi * ηi)))/(365 * ((Ln*(h+nn))+(ηdc*ηi*((h * Wp) - ((h * Ln)/(ηdc * ηi))))));
-    const DCOEWLCN = (ACd - (Ln * nL * 365 * 17) + ((6 * 365 * Ln * nL) / (ηc * ηd * ηi * ηi))) / (365 * (Ln * (h + nL)));
+    const DCOEWL = (ACd - (Ld * n * 29.01 * 365)) / (365 * ((h * Ld) + ((Wp - (Ld / (ηdc * ηi))) * ηdc * ηi * (h - n))));
+    const DCOEWLN = (ACd-(Ln * nn * 365 * 29.01) + ((8 * 365 * Ln * nn)/(ηc * ηd * ηi * ηi)))/(365 * ((Ln*(h+nn))+(ηdc*ηi*((h * Wp) - ((h * Ln)/(ηdc * ηi))))));
+    const DCOEWLCN = (ACd - (Ln * nL * 365 * 29.01) + ((8 * 365 * Ln * nL) / (ηc * ηd * ηi * ηi))) / (365 * (Ln * (h + nL)));
 
     // Store the values in localStorage
     localStorage.setItem('COE', COE.toFixed(2));
@@ -86,6 +87,15 @@ function Sub() {
     localStorage.setItem('Tn', Tn);
     localStorage.setItem('T', T);
     localStorage.setItem('n', n);
+    localStorage.setItem('ACg', ACg);
+    localStorage.setItem('h', h);
+    localStorage.setItem('Wp', Wp);
+    localStorage.setItem('ηi', ηi);
+    localStorage.setItem('ACd', ACd);
+    localStorage.setItem('ηd', ηd);
+    localStorage.setItem('ηdc', ηdc);
+    localStorage.setItem('ηc', ηc);
+
 
     // Submit the form (to go to results.html)
     return true;
